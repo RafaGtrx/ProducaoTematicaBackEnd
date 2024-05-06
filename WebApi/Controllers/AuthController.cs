@@ -26,12 +26,5 @@ namespace WebApi.Controllers
             return Ok(response);
         }
 
-        [HttpPost("register")]
-        public async Task<ActionResult>Register(UsuarioCriacaoDto usuarioRegister)
-        
-        {
-           var response = await _authInterface.Registrar(usuarioRegister);
-            return Ok(response);
-        }
     }
 }

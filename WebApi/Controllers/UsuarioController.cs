@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using WebApi.Dtos;
 using WebApi.Models;
 using WebApi.Service.UsuarioService;
 
@@ -24,46 +25,51 @@ namespace WebApi.Controllers
 
         public async Task<ActionResult<ServiceResponse<List<UsuarioModel>>>> GetUsuarios()
         {
-            return Ok( await _usuarioInterface.GetUsuarios());
+            return Ok(await _usuarioInterface.GetUsuarios());
         }
 
-        [HttpGet ("{id}")]
-
-        public async Task<ActionResult<ServiceResponse<UsuarioModel>>> GetUsuarioById(int id)
+        [Authorize]
+        [HttpGet("{id}")]
+        public async Task<ActionResult<ServiceResponse<UsuarioResponseDto>>> GetUsuarioById(int id)
         {
-            ServiceResponse<UsuarioModel> serviceResponse = await _usuarioInterface.GetUsuarioById(id);
-            return Ok(serviceResponse);
-        }
+            ServiceResponse<UsuarioResponseDto> serviceResponse = await _usuarioInterface.GetUsuarioById(id);
 
+            if (serviceResponse.Sucesso)
+            {
+                return Ok(serviceResponse);
+            }
+            else
+            {
+                return NotFound(serviceResponse);
+            }
+        }
+        
+        
         [HttpPost]
-        public async Task<ActionResult<ServiceResponse<List<UsuarioModel>>>> CreateUsuario(UsuarioModel novoUsuario) 
+        [HttpPut("update-usuario")]
+        public async Task<ActionResult<ServiceResponse<List<UsuarioEditDto>>>> UpdateUsuario(UsuarioEditDto editadoUsuario)
         {
-            return Ok( await _usuarioInterface.CreateUsuario(novoUsuario));
-        }
-
-        [HttpPut]
-        public async Task<ActionResult<ServiceResponse<List<UsuarioModel>>>> UpdateUsuario(UsuarioModel editadoUsuario)
-        {
-            ServiceResponse<List<UsuarioModel>> serviceResponse = await _usuarioInterface.UpdateUsuario(editadoUsuario);
+            ServiceResponse<List<UsuarioEditDto>> serviceResponse = await _usuarioInterface.UpdateUsuario(editadoUsuario);
 
             return Ok(serviceResponse);
         }
 
-        [HttpPut("inativaUsuario/{id}")]
-        public async Task<ActionResult<ServiceResponse<List<UsuarioModel>>>> InativaFuncionario(int id)
-        
-        {
-            ServiceResponse<List<UsuarioModel>> serviceResponse = await _usuarioInterface.InativaUsuario(id);
-
-            return Ok(serviceResponse);
-        }
-        
-        [HttpDelete]
+        [Authorize]
+        [HttpDelete("delete-usuario")]
         public async Task<ActionResult<ServiceResponse<List<UsuarioModel>>>> DeleteUsuario(int id)
         {
             ServiceResponse<List<UsuarioModel>> serviceResponse = await _usuarioInterface.DeleteUsuario(id);
 
             return Ok(serviceResponse);
         }
+
+        [HttpPost("cadastrar-usuario")]
+        public async Task<ActionResult>CreateUsuario(UsuarioCriacaoDto usuarioRegister)
+        
+        {
+           var response = await _usuarioInterface.CreateUsuario(usuarioRegister);
+            return Ok(response);
+        }
+   
     }
 }

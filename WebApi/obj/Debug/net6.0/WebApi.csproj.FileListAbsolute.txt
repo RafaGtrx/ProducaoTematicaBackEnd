@@ -67,3 +67,7 @@ C:\Users\afami\Documents\ProducaoTematica\WebApi\WebApi\bin\Debug\net6.0\Scrutor
 C:\Users\afami\Documents\ProducaoTematica\WebApi\WebApi\bin\Debug\net6.0\Swashbuckle.AspNetCore.Annotations.dll
 C:\Users\afami\Documents\ProducaoTematica\WebApi\WebApi\bin\Debug\net6.0\Swashbuckle.AspNetCore.Filters.dll
 C:\Users\afami\Documents\ProducaoTematica\WebApi\WebApi\obj\Debug\net6.0\WebApi.csproj.CopyComplete
+C:\Users\afami\Documents\ProducaoTematica\WebApi\WebApi\bin\Debug\net6.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Users\afami\Documents\ProducaoTematica\WebApi\WebApi\bin\Debug\net6.0\AWSSDK.Core.dll
+C:\Users\afami\Documents\ProducaoTematica\WebApi\WebApi\bin\Debug\net6.0\AWSSDK.S3.dll
+C:\Users\afami\Documents\ProducaoTematica\WebApi\WebApi\bin\Debug\net6.0\WebApi.staticwebassets.runtime.json

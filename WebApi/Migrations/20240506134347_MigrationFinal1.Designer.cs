@@ -12,8 +12,8 @@ using WebApi.DataContext;
 namespace WebApi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240426125011_primeira-migration")]
-    partial class primeiramigration
+    [Migration("20240506134347_MigrationFinal1")]
+    partial class MigrationFinal1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -32,31 +32,32 @@ namespace WebApi.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<DateTime>("DataCriacao")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("DataModificacao")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("Excluido")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("IdFoto")
-                        .HasColumnType("int");
-
-                    b.Property<int>("IdUsuario")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Texto")
+                    b.Property<string>("Comentario")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("DataAlteracao")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DataCriacao")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("IdImagem_FK")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdUsuario_FK")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("IdImagem_FK");
+
+                    b.HasIndex("IdUsuario_FK");
 
                     b.ToTable("Tbl_Comentarios");
                 });
 
-            modelBuilder.Entity("WebApi.Models.FotoModel", b =>
+            modelBuilder.Entity("WebApi.Models.ImagemModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -64,29 +65,28 @@ namespace WebApi.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("CaminhoFoto")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<bool>("Ativa")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime>("DataCriacao")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime?>("DataModificacao")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("Excluida")
-                        .HasColumnType("bit");
+                    b.Property<string>("DescricaoImagem")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("IdUsuario")
                         .HasColumnType("int");
 
-                    b.Property<string>("TituloFoto")
+                    b.Property<string>("ImagePath")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tbl_Fotos");
+                    b.HasIndex("IdUsuario");
+
+                    b.ToTable("Tbl_Imagens");
                 });
 
             modelBuilder.Entity("WebApi.Models.UsuarioModel", b =>
@@ -122,6 +122,36 @@ namespace WebApi.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Tbl_Usuarios");
+                });
+
+            modelBuilder.Entity("WebApi.Models.ComentarioModel", b =>
+                {
+                    b.HasOne("WebApi.Models.ImagemModel", "Imagem")
+                        .WithMany()
+                        .HasForeignKey("IdImagem_FK")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("WebApi.Models.UsuarioModel", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("IdUsuario_FK")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Imagem");
+
+                    b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("WebApi.Models.ImagemModel", b =>
+                {
+                    b.HasOne("WebApi.Models.UsuarioModel", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("IdUsuario")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Usuario");
                 });
 #pragma warning restore 612, 618
         }

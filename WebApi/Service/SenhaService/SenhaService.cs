@@ -40,7 +40,8 @@ namespace WebApi.Service.SenhaService
             List<Claim> claims = new List<Claim>()
             {
                 new Claim("Nome",usuario.Nome),
-                new Claim("Email",usuario.Email)
+                new Claim("Email",usuario.Email),
+                new Claim("Id", usuario.Id.ToString())
             };
 
             var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(_config.GetSection("AppSettings:Token").Value));

@@ -15,5 +15,6 @@ namespace WebApi.Dtos
 
         [Required]
         public string Senha { get; set; }
+
     }
 }

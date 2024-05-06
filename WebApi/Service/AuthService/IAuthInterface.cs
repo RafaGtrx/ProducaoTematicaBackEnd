@@ -9,8 +9,8 @@ namespace WebApi.Service.AuthService
 {
     public interface IAuthInterface
     {
-        Task<ServiceResponse<UsuarioCriacaoDto>>Registrar(UsuarioCriacaoDto usuarioRegistro);
 
-        Task<ServiceResponse<string>>Login(UsuarioLoginDto usuarioLogin);
+        Task<ServiceResponse<LoginResponseDto>>Login(UsuarioLoginDto usuarioLogin);
+        
     }
 }

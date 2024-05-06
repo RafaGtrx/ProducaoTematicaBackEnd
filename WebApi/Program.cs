@@ -6,6 +6,8 @@ using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 using WebApi.DataContext;
 using WebApi.Service.AuthService;
+using WebApi.Service.ComentarioService;
+using WebApi.Service.ImagemService;
 using WebApi.Service.SenhaService;
 using WebApi.Service.UsuarioService;
 
@@ -17,10 +19,16 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddScoped<IUsuarioInterface, UsuarioService>();
 builder.Services.AddScoped<IAuthInterface, AuthService>();
 builder.Services.AddScoped<ISenhaInterface, SenhaService>();
+builder.Services.AddScoped<IImagemInterface, ImagemService>();
+builder.Services.AddScoped<IComentarioInterface, ComentarioService>();
+
+
+
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
@@ -52,7 +60,14 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
     };
 });
 
+#region 
+builder.Services.AddCors();
+#endregion
+
 var app = builder.Build();
+
+app.UseStaticFiles();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
